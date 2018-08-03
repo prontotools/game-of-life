@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, request, abort
 
 
@@ -10,11 +12,11 @@ def webhook():
         group = request.json.get('group')
 
         if group == 'gof-01':
-            print('hi')
+            os.system('cd game-of-life-01 && git pull origin master')
         elif group == 'gof-02':
-            print('hey')
+            os.system('cd game-of-life-02 && git pull origin master')
         elif group == 'gof-03':
-            print('hhh')
+            os.system('cd game-of-life-03 && git pull origin master')
 
         return '', 200
     else:
