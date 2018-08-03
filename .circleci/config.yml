@@ -1,0 +1,58 @@
+defaults: &defaults
+  working_directory: ~/game-of-life
+  docker:
+    - image: circleci/python:3.7.0
+
+version: 2
+jobs:
+  checkout_code:
+    <<: *defaults
+    steps:
+      - checkout
+      - persist_to_workspace:
+          root: .
+          paths: .
+
+  python_dependencies:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - restore_cache:
+          keys:
+          - py-deps-{{ checksum "Pipfile.lock" }}
+      - run:
+          name: Install Dependencies
+          command: |
+            sudo pip install pipenv
+            export PIPENV_VENV_IN_PROJECT=~/game-of-life
+            pipenv install
+      - save_cache:
+          key: py-deps-{{ checksum "Pipfile.lock" }}
+          paths:
+            - ./.venv
+
+  static_analysis:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - restore_cache:
+          keys:
+          - py-deps-{{ checksum "Pipfile.lock" }}
+      - run:
+          name: Run Static Analysis
+          command: |
+            pipenv run flake8
+
+workflows:
+  version: 2
+  game_of_life:
+    jobs:
+      - checkout_code
+      - python_dependencies:
+          requires:
+            - checkout_code
+      - static_analysis:
+          requires:
+            - python_dependencies
