@@ -45,6 +45,19 @@ jobs:
           command: |
             pipenv run flake8
 
+  unit_tests:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - restore_cache:
+          keys:
+          - py-deps-v1-{{ checksum "Pipfile.lock" }}
+      - run:
+          name: Run Unit Tests
+          command: |
+            pipenv run pytest
+
 workflows:
   version: 2
   game_of_life:
@@ -54,5 +67,8 @@ workflows:
           requires:
             - checkout_code
       - static_analysis:
+          requires:
+            - python_dependencies
+      - unit_tests:
           requires:
             - python_dependencies
