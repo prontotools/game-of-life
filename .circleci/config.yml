@@ -43,6 +43,7 @@ jobs:
       - run:
           name: Run Static Analysis
           command: |
+            export PIPENV_VENV_IN_PROJECT=~/game-of-life
             pipenv run flake8
 
 workflows:
