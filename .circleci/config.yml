@@ -26,7 +26,7 @@ jobs:
           command: |
             sudo pip install pipenv
             export PIPENV_VENV_IN_PROJECT=~/game-of-life
-            pipenv install
+            pipenv install --dev
       - save_cache:
           key: py-deps-{{ checksum "Pipfile.lock" }}
           paths:
@@ -43,7 +43,6 @@ jobs:
       - run:
           name: Run Static Analysis
           command: |
-            export PIPENV_VENV_IN_PROJECT=~/game-of-life
             pipenv run flake8
 
 workflows:
