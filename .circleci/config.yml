@@ -20,7 +20,7 @@ jobs:
           at: .
       - restore_cache:
           keys:
-          - py-deps-{{ checksum "Pipfile.lock" }}
+          - py-deps-v1-{{ checksum "Pipfile.lock" }}
       - run:
           name: Install Dependencies
           command: |
@@ -28,7 +28,7 @@ jobs:
             export PIPENV_VENV_IN_PROJECT=~/game-of-life
             pipenv install --dev
       - save_cache:
-          key: py-deps-{{ checksum "Pipfile.lock" }}
+          key: py-deps-v1-{{ checksum "Pipfile.lock" }}
           paths:
             - ./.venv
 
@@ -39,7 +39,7 @@ jobs:
           at: .
       - restore_cache:
           keys:
-          - py-deps-{{ checksum "Pipfile.lock" }}
+          - py-deps-v1-{{ checksum "Pipfile.lock" }}
       - run:
           name: Run Static Analysis
           command: |
