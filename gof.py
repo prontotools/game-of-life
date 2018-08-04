@@ -1,3 +1,4 @@
+import copy
 import os
 import time
 
@@ -36,6 +37,16 @@ def get_neighbors_of(cell):
                 neighbors.append((x + row, y + col))
 
     return set(neighbors)
+
+
+def evaluate_rule_1(cell, current_board):
+    next_board = copy.deepcopy(current_board)
+
+    cell_neighbors = get_neighbors_of(cell)
+    if len(current_board & cell_neighbors) < 2:
+        next_board.remove(cell)
+
+    return next_board
 
 
 def advance(board):
