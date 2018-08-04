@@ -25,7 +25,17 @@ def get_neighbors_of(cell):
     """
     Return the neighbors of cell.
     """
-    return 1
+    x, y = cell
+    neighbors = []
+
+    distance = 1
+    r = range(0 - distance, 1 + distance)
+    for row in r:
+        for col in r:
+            if not row == col == 0:
+                neighbors.append((x + row, y + col))
+
+    return set(neighbors)
 
 
 def advance(board):
